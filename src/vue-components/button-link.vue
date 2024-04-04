@@ -7,35 +7,32 @@
   </div>
 </template>
 
-<script setup>
-import { computed, ref, toRefs } from "vue"
+<script lang="ts" setup>
+import { computed, ref } from "vue"
 import cn from "classnames"
-import { typographyStyle } from "../theme"
 import {
   buttonLinkContainerStyle,
   ButtonLinkContainerStyle,
   buttonLinkIconStyle,
   buttonLinkStyle,
-} from "../theme/button-link.css"
+  typographyStyle,
+} from "../theme"
 
-const props = defineProps({
-  children: {
-    type: Object,
-    required: false,
-  },
-  href: {
-    type: String,
-    required: false,
-  },
-  icon: {
-    type: String,
-    required: false,
-  },
-  className: {
-    type: String,
-    required: false,
-  },
-  ...toRefs(ButtonLinkContainerStyle),
+export interface CustomHref {
+  href?: string
+  handler: () => void
+}
+
+interface Props
+  extends Partial<Omit<HTMLAnchorElement, "href"> & ButtonLinkContainerStyle> {
+  children?: any
+  href?: CustomHref | string
+  icon?: string
+  className?: string
+}
+
+const props = withDefaults(defineProps<Props>(), {
+  position: "inline",
 })
 
 const anchorProps = ref({ ...props })

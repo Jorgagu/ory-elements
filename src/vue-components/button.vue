@@ -10,37 +10,20 @@
   </div>
 </template>
 
-<script setup>
-import { computed, ref, toRefs } from "vue"
-import { ButtonStyle, buttonStyle } from "../theme/button.css"
+<script lang="ts" setup>
+import { computed, ref } from "vue"
+import { ButtonStyle, buttonStyle } from "../theme"
 
-const props = defineProps({
-  header: {
-    type: String,
-    required: true,
-  },
-  size: {
-    type: String,
-    required: false,
-  },
-  variant: {
-    type: String,
-    required: false,
-  },
-  fullWidth: {
-    type: Boolean,
-    required: false,
-  },
-  className: {
-    type: String,
-    required: false,
-  },
-  ...toRefs(ButtonStyle),
-})
+interface Props extends Partial<HTMLButtonElement & ButtonStyle> {
+  header: string
+  fullWidth?: boolean
+  className?: string
+}
+
+const props = withDefaults(defineProps<Props>(), {})
 
 const buttonProps = ref({ ...props })
 const title = props.header
-const className = props.className
 const buttonWidth = computed(() => ({
   width: props.fullWidth ? "100%" : "auto",
 }))

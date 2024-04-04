@@ -27,6 +27,7 @@ module.exports = {
     ecmaFeatures: {
       jsx: true,
     },
+    extraFileExtensions: [".vue"],
   },
   settings: {
     playwright: {

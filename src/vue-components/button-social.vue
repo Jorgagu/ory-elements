@@ -15,42 +15,25 @@
   </div>
 </template>
 
-<script setup>
-import { computed, ref, toRefs } from "vue"
+<script lang="ts" setup>
+import { computed, ref } from "vue"
 import cn from "classnames"
 import {
   buttonSocialIconEndStyle,
   buttonSocialIconStartStyle,
   ButtonSocialStyle,
   buttonSocialStyle,
-} from "../theme/button-social.css"
+} from "../theme"
 
-const props = defineProps({
-  header: {
-    type: String,
-    required: true,
-  },
-  brand: {
-    type: String,
-    required: true,
-  },
-  size: {
-    type: String,
-    required: false,
-  },
-  variant: {
-    type: String,
-    required: false,
-  },
-  fullWidth: {
-    type: Boolean,
-    required: false,
-  },
-  className: {
-    type: String,
-    required: false,
-  },
-  ...toRefs(ButtonSocialStyle),
+interface Props extends Partial<HTMLButtonElement & ButtonSocialStyle> {
+  header: string
+  brand: string
+  fullWidth?: boolean
+  className?: string
+}
+
+const props = withDefaults(defineProps<Props>(), {
+  size: "medium",
 })
 
 const buttonProps = ref({ ...props })
@@ -64,17 +47,13 @@ const computedButtonSocialStyle = computed(() => buttonSocialStyle(props))
 
 const computedBrandClass = computed(() => {
   const brandClass =
-    brand.value !== "generic"
-      ? `fa-brands fa-${brand.value}`
-      : "fa-solid fa-layer-group"
-  return cn(brandClass, buttonSocialIconStartStyle(props.size))
+    brand !== "generic" ? `fa-brands fa-${brand}` : "fa-solid fa-layer-group"
+  return cn(brandClass, buttonSocialIconStartStyle({ props }))
 })
 
 const computedBrandClassEnd = computed(() => {
   const brandClass =
-    brand.value !== "generic"
-      ? `fa-brands fa-${brand.value}`
-      : "fa-solid fa-layer-group"
+    brand !== "generic" ? `fa-brands fa-${brand}` : "fa-solid fa-layer-group"
   return cn(brandClass, buttonSocialIconEndStyle(props.size))
 })
 </script>
